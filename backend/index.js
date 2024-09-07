@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import moment from 'moment';
 import { possessions } from './models/possessions.js';
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors());
