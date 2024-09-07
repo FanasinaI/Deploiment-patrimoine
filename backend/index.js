@@ -99,6 +99,7 @@ app.post('/patrimoine/range', (req, res) => {
   res.json({ dateDebut, dateFin, valeur: totalValeur });
 });
 
-app.listen(5000, () => {
-  console.log('Server is running on port 5000');
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
