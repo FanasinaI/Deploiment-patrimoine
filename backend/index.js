@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import moment from 'moment';
-import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { possessions } from './models/possessions.js';
 
 const PORT = process.env.PORT || 5000;
@@ -102,12 +103,16 @@ app.post('/patrimoine/range', (req, res) => {
   res.json({ dateDebut, dateFin, valeur: totalValeur });
 });
 
+// Obtenir le répertoire de base
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // Servir les fichiers statiques du frontend
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(join(__dirname, '../dist')));
 
 // Route pour capturer toutes les autres routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  res.sendFile(join(__dirname, '../dist/index.html'));
 });
 
 app.listen(PORT, () => {
