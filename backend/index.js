@@ -1,13 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import moment from 'moment';
+import path from 'path';
 import { possessions } from './models/possessions.js';
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes API
 app.get('/possession', (req, res) => {
   res.json({ possessions });
 });
@@ -99,7 +102,14 @@ app.post('/patrimoine/range', (req, res) => {
   res.json({ dateDebut, dateFin, valeur: totalValeur });
 });
 
+// Servir les fichiers statiques du frontend
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Route pour capturer toutes les autres routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
