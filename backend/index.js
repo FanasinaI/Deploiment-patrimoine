@@ -3,7 +3,7 @@ import cors from 'cors';
 import moment from 'moment';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { possessions } from './models/possessions.js';
+import { possessions } from './models/possessions.js'; // Assure-toi que ce fichier est correctement structuré
 
 const PORT = process.env.PORT || 5000;
 
@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes API
+// Routes API pour les possessions
 app.get('/possession', (req, res) => {
   res.json({ possessions });
 });
@@ -58,6 +58,7 @@ app.delete('/possession/:libelle', (req, res) => {
   }
 });
 
+// Fonction de calcul de la valeur actuelle d'une possession
 const calculateValeurActuelle = (possession, dateActuelle) => {
   const dateDebut = moment(possession.dateDebut);
   let valeurActuelle = possession.valeur;
@@ -74,6 +75,7 @@ const calculateValeurActuelle = (possession, dateActuelle) => {
   return Math.max(valeurActuelle, 0);
 };
 
+// Route pour calculer la valeur du patrimoine à une date donnée
 app.get('/patrimoine/:date', (req, res) => {
   const { date } = req.params;
   const selectedDate = moment(date);
@@ -88,6 +90,7 @@ app.get('/patrimoine/:date', (req, res) => {
   res.json({ date, valeur: totalValeur });
 });
 
+// Route pour calculer la valeur du patrimoine entre deux dates
 app.post('/patrimoine/range', (req, res) => {
   const { dateDebut, dateFin } = req.body;
   const endDate = moment(dateFin);
@@ -103,18 +106,19 @@ app.post('/patrimoine/range', (req, res) => {
   res.json({ dateDebut, dateFin, valeur: totalValeur });
 });
 
-// Obtenir le répertoire de base
+// Obtenir le répertoire de base pour les fichiers statiques
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Servir les fichiers statiques du frontend
 app.use(express.static(join(__dirname, '../dist')));
 
-// Route pour capturer toutes les autres routes
+// Route pour capturer toutes les autres routes et renvoyer vers index.html
 app.get('*', (req, res) => {
   res.sendFile(join(__dirname, '../dist/index.html'));
 });
 
+// Démarrage du serveur
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
