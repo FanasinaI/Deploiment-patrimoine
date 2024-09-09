@@ -7,10 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "start": "node backend/index.js", 
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
-    "patrimoine": "json-server --watch src/dataBase.json --port 5000",
-    "backend": "node backend/index.js" 
+    "patrimoine": "json-server --watch src/dataBase.json --port 5001"
   },
   "dependencies": {
     "cors": "^2.8.5",
